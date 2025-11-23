@@ -1,0 +1,251 @@
+/* static/style.css */
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #eef1f6;
+    /* Light gray-blue background */
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    font-size: 2.2em;
+    color: #2c3e50;
+    /* Darker blue-gray */
+    margin-bottom: 25px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    /* Blue accent */
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.6em;
+    color: #34495e;
+    /* Slightly lighter dark blue-gray */
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Spotify Status Section */
+.spotify-status {
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.spotify-status p {
+    margin: 5px 0;
+}
+
+.spotify-status strong {
+    font-size: 1.1em;
+}
+
+.connected {
+    background-color: #d4edda;
+    /* Light green */
+    border: 1px solid #28a745;
+    /* Green border */
+    color: #155724;
+    /* Dark green text */
+}
+
+.disconnected {
+    background-color: #f8d7da;
+    /* Light red */
+    border: 1px solid #dc3545;
+    /* Red border */
+    color: #721c24;
+    /* Dark red text */
+}
+
+#currentTrack {
+    font-style: italic;
+    font-size: 0.95em;
+    margin-top: 15px;
+    padding-left: 10px;
+    border-left: 3px solid #6c757d;
+    /* Gray accent for now playing */
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    /* Arrange buttons in a row */
+    gap: 15px;
+    /* Space between buttons */
+    margin-top: 20px;
+    align-items: center;
+    /* Vertically align items */
+    flex-wrap: wrap;
+    /* Allow wrapping on smaller screens */
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-decoration: none;
+    /* For link-like buttons */
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: #1DB954;
+    /* Spotify Green */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1ed760;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    /* Red */
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    /* Gray */
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Dropdown specific styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    /* Style for the button that opens the dropdown */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Space between text and arrow */
+}
+
+.dropdown-arrow {
+    font-size: 0.8em;
+    /* Smaller arrow */
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle.active .dropdown-arrow {
+    transform: rotate(180deg);
+    /* Rotate arrow when dropdown is open */
+}
+
+.dropdown-content {
+    display: none;
+    /* Hidden by default */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 280px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 8px;
+    padding: 20px;
+    right: 0;
+    /* Align dropdown to the right of the button */
+    margin-top: 10px;
+    /* Space below the button */
+    border: 1px solid #ddd;
+}
+
+.dropdown-content.show {
+    display: block;
+    /* Show when 'show' class is added */
+}
+
+.dropdown-content h3 {
+    margin-top: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.dropdown-content p {
+    font-size: 0.95em;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+/* Radio Group inside dropdown */
+.radio-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+    vertical-align: middle;
+}
+
+.dropdown-content .btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* Messages (Success/Error) */
+.message {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: none;
+    /* Hidden by default */
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #28a745;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #dc3545;
+}

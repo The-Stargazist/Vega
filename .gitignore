@@ -1,0 +1,14 @@
+# Python specific
+__pycache__/
+*.pyc
+
+# Environment variables
+.env          # <--- IMPORTANT: This ignores your local .env file
+env/
+venv/
+
+# macOS specific
+.DS_Store
+
+# Spotify cache file - contains your access tokens, NEVER commit this
+.spotify_cache

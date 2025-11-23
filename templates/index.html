@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Spotify Controls</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>AI Assistant Controls</h1>
+
+        <h2>Spotify Status</h2>
+        <div class="spotify-status {% if spotify_connected %}connected{% else %}disconnected{% endif %}">
+            {% if spotify_connected %}
+            <p><strong>Status: Connected to Spotify</strong></p>
+            {% if current_track %}
+            <p id="currentTrack">Currently Playing: {{ current_track.name }} by {{ current_track.artist }} {% if
+                current_track.is_playing %}(Playing){% else %}(Paused){% endif %}</p>
+            {% else %}
+            <p>No track currently playing or available.</p>
+            {% endif %}
+            <div class="button-group">
+                <button class="btn btn-danger" onclick="window.location.href='/disconnect_spotify'">Disconnect
+                    Spotify</button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" onclick="toggleDropdown()">Settings <span
+                            class="dropdown-arrow">&#9660;</span></button>
+                    <div class="dropdown-content" id="settingsDropdown">
+                        <h3>Default Play Behavior for LLM Commands</h3>
+                        <p>When you ask the LLM to "play [song]", should it:</p>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="play_behavior" value="play_direct" {% if
+                                    default_play_behavior=='play_direct' %}checked{% endif %}>
+                                Play Directly (Stops current track, plays new one)
+                            </label><br>
+                            <label>
+                                <input type="radio" name="play_behavior" value="queue" {% if
+                                    default_play_behavior=='queue' %}checked{% endif %}>
+                                Add to Queue (Keeps current track playing, adds new one to queue)
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="savePlayBehavior()">Save Setting</button>
+                        <div class="message" id="settingsMessage"></div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p><strong>Status: Not Connected to Spotify</strong></p>
+            <button class="btn btn-primary" onclick="window.location.href='/connect_spotify'">Connect Spotify</button>
+            {% endif %}
+        </div>
+        <div class="message" id="spotifyMessage"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedBehavior = "{{ default_play_behavior }}";
+            const radios = document.querySelectorAll('input[name="play_behavior"]');
+            radios.forEach(radio => {
+                if (radio.value === savedBehavior) {
+                    radio.checked = true;
+                }
+            });
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+                if (!event.target.matches('.dropdown-toggle')) {
+                    const dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (let i = 0; i < dropdowns.length; i++) {
+                        const openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
+        });
+
+        function toggleDropdown() {
+            document.getElementById("settingsDropdown").classList.toggle("show");
+        }
+
+        async function savePlayBehavior() {
+            const selectedBehavior = document.querySelector('input[name="play_behavior"]:checked').value;
+            const settingsMessage = document.getElementById('settingsMessage');
+
+            try {
+                const response = await fetch('/set_play_behavior', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ behavior: selectedBehavior })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    displayMessage(settingsMessage, 'success', `Default play behavior updated to: ${data.new_behavior}.`);
+                    // Optionally close dropdown after saving
+                    setTimeout(() => document.getElementById("settingsDropdown").classList.remove("show"), 1500);
+                } else {
+                    displayMessage(settingsMessage, 'error', `Failed to save setting: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Error saving play behavior:', error);
+                displayMessage(settingsMessage, 'error', 'An error occurred while saving.');
+            }
+        }
+
+        // Removed sendSpotifyAction as playback buttons are gone
+        // The spotifyMessage div can be used for connection/disconnection feedback if desired
+        function displayMessage(element, type, message) {
+            element.className = `message ${type}`;
+            element.textContent = message;
+            element.style.display = 'block';
+            setTimeout(() => { element.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+
+</html>
